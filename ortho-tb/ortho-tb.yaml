@@ -1,0 +1,280 @@
+# `U` is a predefined unit of measure that means 19.05mm, which is MX spacing
+points:
+  zones:
+    m:
+      anchor:
+        shift: [0.5U + 2.5, 0.5U + 2.5]
+      columns:
+        c1:
+          rows.r2.rotate: -90
+          rows.r3.rotate: -90
+          rows.r4.rotate: -90
+        c2:
+        c3:
+        c4:
+          rows.r4.skip: true
+          rows.r5.skip: true
+          rows.r1.rotate: 90
+        c5:
+          rows.r4.skip: true
+          rows.r5.skip: true
+          rows.r1.rotate: -90
+          rows.r2.rotate: 90
+          rows.r3.rotate: 90
+          rows.r4.rotate: 90
+      rows:
+        r1:
+        r2: 
+        r3: 
+        r4:
+        r5:
+          rotate: 180
+  key:
+    footprints:
+      - type: mx
+        nets:
+          from: GND
+          to: =name
+        params:
+          # reverse: true
+          keycaps: true
+outlines:
+  exports:
+    raw:
+      - type: keys
+        side: left
+    switches:
+      main:
+        type: keys
+        side: left
+        size: 14
+        bound: false
+    plate:
+      switches:
+        type: outline
+        name: switches
+        operation: subtract
+    border:
+      - type: rectangle
+        size: 100
+        # anchor:
+        #   shift: [-0.5U - 2.5, -0.5U - 2.5]
+        corner: 1.5
+pcbs:
+  ortho-tb-top-plate:
+    outlines:
+      edge:
+        outline: switches
+        layer: Edge.Cuts
+      main:
+        outline: border
+        layer: Edge.Cuts
+    footprints:
+      - type: mountinghole
+        anchor:
+            shift: [2.5, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [2.5, 100-2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.5, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.5, 100-2.5]
+      - type: trackballmounts
+        params:
+          length: 20.35
+        anchor:
+            shift: [81, 80]
+            rotate: 180
+      - type: trackballmounts
+        params:
+          length: 19
+        anchor:
+            shift: [81, 80]
+            rotate: 170
+      - type: trackballmounts
+        params:
+          length: 18
+        anchor:
+            shift: [81, 80]
+            rotate: 159
+      - type: trackballmounts
+        params:
+          length: 17
+        anchor:
+            shift: [81, 80]
+            rotate: 148
+      - type: trackballmounts
+        params:
+          length: 16
+        anchor:
+            shift: [81, 80]
+            rotate: 136
+  ortho-tb-board:
+    outlines:
+      main:
+        outline: border
+        layer: Edge.Cuts
+    footprints:
+      - type: holyiot
+        params:
+          side: B
+          underside_pads: false
+        anchor:
+          - ref: m_c3_r1
+            shift: [1.5U - 0.1, -2.5]
+            rotate: 0
+        nets:
+          ####### Vertical style routing setup
+          # right side of U from top
+          #GND            #  1
+          P110: XTRA      #  2   
+          P111: m_c1_r1   #  3
+          P113: m_c2_r1   #  4
+          P115: m_c3_r1   #  5
+          P003: m_c4_r1   #  6   
+          P002: m_c1_r2   #  7
+          P028: m_c1_r3   #  8
+          P029: m_c1_r4   #  9
+          P030: m_c1_r5   # 10
+          P031: m_c2_r2   # 11
+          P004: m_c2_r3   # 12
+          P005: m_c2_r4   # 13
+          # bottom of U from right
+          VDD: VCC        # 14     
+          P007: m_c2_r5   # 15
+          P109: m_c3_r2   # 16
+          P012: m_c3_r3   # 17
+          P023: m_c3_r4   # 18
+          P021: m_c3_r5   # 19
+          P019: m_c4_r2   # 20
+          P018: m_c4_r3   # 21
+          #VBUS           # 22
+          #DMIN           # 23
+          #DPLUS          # 24
+          # left side of U from bottom
+          #GND            # 25
+          P022: m_c4_r4   # 26
+          P100: m_c4_r5   # 27
+          P103: m_c5_r1   # 28
+          P101: m_c5_r2   # 29
+          P102: m_c5_r3   # 30
+          #SWDCLK         # 31
+          #SWDIO          # 32
+          P104: m_c5_r4   # 33
+          P106: ECC       # 34
+          P009: ECA       # 35
+          P010: m_c5_r5   # 36
+          #GND            # 37
+      # left side
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [6, 50]
+            rotate: 180
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [6, 50+U]
+            rotate: 180
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [6, 50-U]
+            rotate: 180
+      # right side
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [94, 50]
+            rotate: 180
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [94, 50+U]
+            rotate: 180
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [94, 50-U]
+            rotate: 180
+      # bottom
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [50, 6]
+            rotate: 90
+      # top
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [50, 94]
+            rotate: 90
+      - type: si2302
+        params:
+          side: B
+        anchor:
+          - ref: m_c1_r1
+            shift: [0.5U, 0.3U]
+            rotate: -90
+      - type: fourpinheader
+        params:
+          # side: B
+        anchor:
+          - ref: m_c2_r1
+            shift: [0, -6.5]
+            rotate: 90
+          # - shift: [1U, 0.5U]
+          #   rotate: 90
+      - type: mountinghole
+        anchor:
+            shift: [2.5, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [2.5, 100-2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.5, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.5, 100-2.5]
+      - type: trackballmounts
+        params:
+          length: 20.35
+        anchor:
+            shift: [81, 80]
+            rotate: 180
+      - type: trackballmounts
+        params:
+          length: 19
+        anchor:
+            shift: [81, 80]
+            rotate: 170
+      - type: trackballmounts
+        params:
+          length: 18
+        anchor:
+            shift: [81, 80]
+            rotate: 159
+      - type: trackballmounts
+        params:
+          length: 17
+        anchor:
+            shift: [81, 80]
+            rotate: 148
+      - type: trackballmounts
+        params:
+          length: 16
+        anchor:
+            shift: [81, 80]
+            rotate: 136

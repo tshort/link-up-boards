@@ -1,0 +1,267 @@
+# `U` is a predefined unit of measure that means 19.05mm, which is MX spacing
+# `U` is a predefined unit of measure that means 19.05mm, which is MX spacing
+points:
+  zones:
+    t:   # thumbs
+      anchor:
+        shift: [8.5, 8.5]
+      columns:
+        c1:
+        c2:
+          spread: 18.8
+        c3:
+          spread: 18.8
+        c4:
+          # rows.r1.rotate: 90
+          spread: 18.8
+      rows:
+        r1:
+          padding: 18.8
+        r2: 
+          padding: 18.8
+    m:   # main matrix
+      anchor:
+        shift: [14.8,46.8]
+        rotate: 5.5
+      columns:
+        c1:
+          rows.r3.rotate: -90
+          rows.r2.rotate: -90
+          rows.r1.rotate: -90
+        c2:
+          rows.r3.rotate: 180
+          # stagger: -2
+          spread: 18.8
+        c3:
+          rows.r3.rotate: 180
+          stagger: 3.2
+          spread: 18.8
+        c4:
+          stagger: -5.0
+          spread: 18.8
+        c5:
+          stagger: -8.6
+          spread: 18.8
+          rows.r1.rotate: 90
+          rows.r2.rotate: 90
+          rows.r3.rotate: 90
+      rows:
+        r1:
+          padding: 18.8
+        r2: 
+          padding: 18.8
+        r3: 
+          padding: 18.8
+  key:
+    footprints:
+      - type: mx
+        nets:
+          from: GND
+          to: =name
+        params:
+          reverse: true
+          keycaps: true
+outlines:
+  exports:
+    raw:
+      - type: keys
+        side: left
+    switches:
+      main:
+        type: keys
+        side: left
+        size: 14
+        bound: false
+    plate:
+      switches:
+        type: outline
+        name: switches
+        operation: subtract
+    border:
+      - type: rectangle
+        size: 100
+        corner: 1.5
+pcbs:
+  mitosis-top-plate:
+    outlines:
+      edge:
+        outline: switches
+        layer: Edge.Cuts
+      main:
+        outline: border
+        layer: Edge.Cuts
+    footprints:
+      - type: mountinghole
+        anchor:
+            shift: [2.5, 38]
+      - type: mountinghole
+        anchor:
+            shift: [2.5, 100-2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.5, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.5, 100-2.5]
+  mitosis-board:
+    outlines:
+      main:
+        outline: border
+        layer: Edge.Cuts
+    footprints:
+      - type: holyiot
+        params:
+          side: B
+          underside_pads: false
+        anchor:
+          - ref: t_c3_r1
+            shift: [2.0U, 0.5]
+            rotate: 0
+        nets:
+          ####### Vertical style routing setup
+          # right side of U from top
+          #GND            #  1
+          P110: t_c1_r1   #  2   
+          P111: t_c2_r1   #  3
+          P113: t_c3_r1   #  4
+          P115: t_c4_r1   #  5
+          P003: t_c1_r2   #  6   
+          P002: t_c2_r2   #  7
+          P028: t_c3_r2   #  8
+          P029: t_c4_r2   #  9
+          P030: m_c1_r1   # 10
+          P031: m_c1_r2   # 11
+          P004: m_c1_r3   # 12
+          # P005:         # 13
+          # bottom of U from right
+          VDD:  VCC       # 14     
+          P007: m_c2_r1   # 15
+          P109: m_c2_r2   # 16
+          P012: m_c2_r3   # 17
+          P023: m_c3_r1   # 18
+          P021: m_c3_r2   # 19
+          P019: m_c3_r3   # 20
+          P018: m_c4_r1   # 21
+          #VBUS           # 22
+          #DMIN           # 23
+          #DPLUS          # 24
+          # left side of U from bottom
+          #GND            # 25
+          P022: m_c4_r2   # 26
+          P100: m_c4_r3   # 27
+          P103: m_c5_r1   # 28
+          P101: m_c5_r2   # 29
+          P102: m_c5_r3   # 30
+          #SWDCLK         # 31
+          #SWDIO          # 32
+          P104: XTRA      # 33
+          # P106:         # 34
+          # P009:         # 35
+          # P010:         # 36
+          #GND            # 37
+      - type: holyiot
+        params:
+          # side: B
+          underside_pads: false
+        anchor:
+          - ref: t_c3_r1
+            shift: [2.0U, 0.5]
+            rotate: 180
+        nets:
+          ####### Vertical style routing setup
+          # left side of U from bottom
+          #GND            # 37
+          P010: t_c1_r1   # 36
+          P009: t_c2_r1   # 35
+          P106: t_c3_r1   # 34
+          P104: t_c4_r1   # 33
+          #SWDIO          # 32   
+          #SWDCLK         # 31   
+          P102: t_c3_r2   # 30
+          P101: t_c4_r2   # 29
+          P103: m_c1_r1   # 28
+          P100: m_c1_r2   # 27
+          P022: m_c1_r3   # 26
+          #GND            # 25
+          # bottom of U from right
+          #DPLUS          # 24
+          #DMIN           # 23   
+          #VBUS           # 22   
+          P018: m_c2_r3   # 21
+          P019: m_c3_r1   # 20
+          P021: m_c3_r2   # 19
+          P023: m_c3_r3   # 18
+          P012: m_c4_r1   # 17
+          P109: m_c2_r2   # 16
+          P007: m_c2_r1   # 15
+          VDD:  VCC       # 14     
+          # right side of U from top
+          # P005:         # 13
+          P004: m_c4_r2   # 12
+          P031: m_c4_r3   # 11
+          P030: m_c5_r1   # 10
+          P029: m_c5_r2   #  9
+          P028: m_c5_r3   #  8
+          P002: t_c1_r2   #  7
+          P003: t_c2_r2   #  6   
+          P115: XTRA      #  5
+          P113:    #  4
+          P111:    #  3
+          P110:    #  2   
+          #GND            #  1
+      # left side
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [6, 50]
+            rotate: 180
+      # bottom
+      # - type: magnetic_connector
+      #   params:
+      #     side: B
+      #   anchor:
+      #     - shift: [30, 6]
+      #       rotate: 90
+      # top
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [30, 94]
+            rotate: 90
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [30-2.54*2, 94]
+            rotate: -90
+      - type: si2302
+        params:
+          side: B
+        anchor:
+          - shift: [6, 44]
+            rotate: 180
+      - type: si2302
+        params:
+          # side: B
+        anchor:
+          - shift: [6, 44]
+            rotate: 0
+      - type: fourpinheader
+        params:
+        anchor:
+          - shift: [100-5.5, 28]
+            rotate: 180
+      - type: mountinghole
+        anchor:
+            shift: [2.5, 38]
+      - type: mountinghole
+        anchor:
+            shift: [2.5, 100-2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.5, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.5, 100-2.5]

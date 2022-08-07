@@ -1,0 +1,221 @@
+# `U` is a predefined unit of measure that means 19.05mm, which is MX spacing
+units:  
+  a: 5.71   # angle of columns
+  s: 100.49876
+  dx: 10/s
+  dy: 100/s
+  p1: 6 + 50*dx/dy
+  p2: 6 + (50+U)*dx/dy
+points:
+  zones:
+    m:   # top part of keyboard
+      anchor:
+        shift: [1U + 2.5, 2.5U + 2.5]
+      columns:
+        c1:
+          rows.r3.rotate: -90
+        c2:
+        c3:
+        c4:
+      rows:
+        r3: 
+        r4:
+        r5:
+          rotate: 180
+    n:   # bottom two rows of keyboard
+      anchor:
+        shift: [0.5U + 2.5, 0.5U + 2.5]
+      columns:
+        c1:
+        c2:
+        c3:
+        c4:
+          rows.r1.rotate:  90
+        c5:
+          rows.r1.rotate: -90
+      rows:
+        r1:
+        r2: 
+  key:
+    footprints:
+      - type: mx
+        nets:
+          from: GND
+          to: =name
+        params:
+          # reverse: true
+          keycaps: true
+outlines:
+  exports:
+    raw:
+      - type: keys
+        side: left
+    switches:
+      main:
+        type: keys
+        side: left
+        size: 14
+        bound: false
+    plate:
+      switches:
+        type: outline
+        name: switches
+        operation: subtract
+    border0:
+      - type: polygon
+        points:
+          - shift: [100, 0]
+          - shift: [-10, 100]
+          - shift: [-80, 0]
+          - shift: [-10, -100]
+    border:
+      - type: outline
+        name: border0
+        fillet: 1.5
+pcbs:
+  angle-top-plate:
+    outlines:
+      edge:
+        outline: switches
+        layer: Edge.Cuts
+      main:
+        outline: border
+        layer: Edge.Cuts
+    footprints:
+      - type: mountinghole
+        anchor:
+            shift: [2.8, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [10+2.2, 100-2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.8, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [90-2.2, 100-2.5]
+          
+  angle-board:
+    outlines:
+      main:
+        outline: border
+        layer: Edge.Cuts
+    footprints:
+      - type: holyiot
+        params:
+          side: B
+          underside_pads: false
+        anchor:
+          - ref: n_c4_r1
+            shift: [0, -0.5U]
+            rotate: -90
+        nets:
+          ####### Vertical style routing setup
+          # right side of U from top
+          #GND            #  1
+          P110: XTRA      #  2   
+          P111: n_c1_r1   #  3
+          P113: n_c2_r1   #  4
+          P115: n_c3_r1   #  5
+          P003: n_c4_r1   #  6   
+          P002: n_c1_r2   #  7
+          P028: n_c2_r2   #  8
+          P029: m_c1_r3   #  9
+          P030: m_c1_r4   # 10
+          P031: m_c1_r5   # 11
+          P004: m_c2_r3   # 12
+          P005: m_c2_r4   # 13
+          # bottom of U from right
+          VDD: VCC        # 14     
+          P007: m_c2_r5   # 15
+          P109: n_c3_r2   # 16
+          P012: m_c3_r3   # 17
+          P023: m_c3_r4   # 18
+          P021: m_c3_r5   # 19
+          P019: m_c4_r3   # 20
+          P018: n_c4_r2   # 21
+          #VBUS           # 22
+          #DMIN           # 23
+          #DPLUS          # 24
+          # left side of U from bottom
+          #GND            # 25
+          P022: m_c4_r4   # 26
+          P100: m_c4_r5   # 27
+          P103:    # 28
+          P101: n_c5_r2   # 29
+          P102: n_c5_r1   # 30
+          #SWDCLK         # 31
+          #SWDIO          # 32
+          P104:    # 33
+          P106:    # 34
+          P009:    # 35
+          P010:    # 36
+          #GND            # 37
+      # left side
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [ p1 * dy, s/2 - p1 * dx]
+            rotate: 180-a
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [ p2 * dy, (s/2 + U) - p2 * dx]
+            rotate: 180-a
+      # right side
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [ 100 - p1 * dy, s/2 - p1 * dx]
+            rotate: 180+a
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [ 100 - p2 * dy, (s/2 + U) - p2 * dx]
+            rotate: 180+a
+      # bottom
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - shift: [50, 6]
+            rotate: 90
+      # top
+      - type: magnetic_connector
+        params:
+          side: B
+        anchor:
+          - ref: m_c2_r5 
+            shift: [0, -5.9]
+            rotate: -90
+      - type: si2302
+        params:
+          side: B
+        anchor:
+          - ref: m_c1_r3 
+            shift: [8, -9.9]
+            rotate: 0
+      - type: fourpinheader
+        params:
+          # side: B
+        anchor:
+          - ref: n_c2_r1
+            shift: [0, -5.5]
+            rotate: 90
+      - type: mountinghole
+        anchor:
+            shift: [2.8, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [10+2.2, 100-2.5]
+      - type: mountinghole
+        anchor:
+            shift: [100-2.8, 2.5]
+      - type: mountinghole
+        anchor:
+            shift: [90-2.2, 100-2.5]
+          
